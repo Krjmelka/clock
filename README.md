@@ -1,2 +1,2 @@
 # clock
-simple clock
+Simple Clock

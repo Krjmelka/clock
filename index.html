@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .clock {
+        width: 300px;
+        height: 300px;
+        border: 1px solid black;
+        position: relative;
+        border-radius: 50%;
+      }
+      .clock::before {
+        content: "";
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: black;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .second-arrow {
+        --initial-timing: calc((60 - var(--seconds-initial)) * 1s);
+        width: 1px;
+        height: 50%;
+        background: black;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform-origin: bottom;
+        animation: seconds-initial var(--initial-timing) linear,
+          full-round 60s var(--initial-timing) linear infinite;
+      }
+      .minutes-arrow {
+        --initial-timing: calc((3600 - var(--minutes-initial)) * 1s);
+        width: 3px;
+        height: 50%;
+        background: black;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform-origin: bottom;
+        animation: minutes-initial var(--initial-timing) linear,
+          full-round 3600s var(--initial-timing) linear infinite;
+      }
+      .hours-arrow {
+        --initial-timing: calc((43200 - var(--hours-initial)) * 1s);
+        width: 5px;
+        height: 38%;
+        background: black;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform-origin: 0 132%;
+        animation: hours-initial var(--initial-timing) linear,
+          full-round-hour 43200s var(--initial-timing) linear infinite;
+      }
+      @keyframes full-round {
+        from {
+          transform: rotate(0deg) translate(-50%, 24%);
+        }
+        to {
+          transform: rotate(360deg) translate(-50%, 24%);
+        }
+      }
+      @keyframes full-round-hour {
+        from {
+          transform: rotate(0deg) translate(-50%, 56%);
+        }
+        to {
+          transform: rotate(360deg) translate(-50%, 56%);
+        }
+      }
+      @keyframes seconds-initial {
+        from {
+          transform: rotate(calc(var(--seconds-initial) * 6deg))
+            translate(-50%, 24%);
+        }
+        to {
+          transform: rotate(360deg) translate(-50%, 24%);
+        }
+      }
+      @keyframes minutes-initial {
+        from {
+          transform: rotate(calc((var(--minutes-initial) / 60) * 6deg))
+            translate(-50%, 24%);
+        }
+        to {
+          transform: rotate(360deg) translate(-50%, 24%);
+        }
+      }
+      @keyframes hours-initial {
+        from {
+          transform: rotate(calc((var(--hours-initial) / 3600) * 30deg))
+            translate(-50%, 56%);
+        }
+        to {
+          transform: rotate(360deg) translate(-50%, 56%);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="clock">
+      <div class="second-arrow"></div>
+      <div class="minutes-arrow"></div>
+      <div class="hours-arrow"></div>
+    </div>
+    <script>
+      const date = new Date();
+      let seconds = date.getSeconds();
+      let minutes = date.getMinutes();
+      let hour = date.getHours();
+      hour = hour > 11 ? Math.abs(12 - hour) : hour;
+
+      document.documentElement.style.setProperty("--seconds-initial", seconds);
+      document.documentElement.style.setProperty(
+        "--minutes-initial",
+        minutes * 60 - seconds
+      );
+      document.documentElement.style.setProperty(
+        "--hours-initial",
+        hour * 3600 + (minutes * 60 - seconds)
+      );
+    </script>
+  </body>
+</html>
