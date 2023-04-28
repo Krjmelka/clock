@@ -6,17 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Clock</title>
     <style>
+      :root {
+        font-size: 10px;
+      }
       .clock {
-        width: 300px;
-        height: 300px;
+        width: 30rem;
+        height: 30rem;
         border: 1px solid black;
         position: relative;
         border-radius: 50%;
       }
       .clock::before {
         content: "";
-        width: 8px;
-        height: 8px;
+        width: 0.8rem;
+        height: 0.8rem;
         border-radius: 50%;
         background-color: red;
         position: absolute;
@@ -25,25 +28,20 @@
         transform: translate(-50%, -50%);
         z-index: 1;
       }
-      .big-dot {
+      .big-dot,
+      .small-dot {
         position: absolute;
-        width: 5px;
-        height: 15px;
+        width: 1.5%;
+        height: 5%;
         background-color: black;
         left: 50%;
         top: 0;
-        transform-origin: 0 150px;
+        transform-origin: 0 15rem;
         transform: rotate(calc(var(--dot-angle) * 1deg)) translate(-50%, 0);
       }
       .small-dot {
-        position: absolute;
-        width: 2px;
-        height: 8px;
-        background-color: black;
-        left: 50%;
-        top: 0;
-        transform-origin: 0 150px;
-        transform: rotate(calc(var(--dot-angle) * 1deg)) translate(-50%, 0);
+        width: 0.2rem;
+        height: 0.8rem;
       }
       .big-dot::after {
         position: absolute;
@@ -51,13 +49,13 @@
         transform: rotate(calc(var(--dot-angle) * -1deg));
         top: 90%;
         left: -340%;
-        width: 40px;
+        width: 4rem;
         text-align: center;
-        font-size: 30px;
+        font-size: 3rem;
       }
       .second-arrow {
         --initial-timing: calc((60 - var(--seconds-initial)) * 1s);
-        width: 1px;
+        width: 0.1rem;
         height: 50%;
         background: red;
         position: absolute;
@@ -66,11 +64,11 @@
         transform-origin: 0 100%;
         animation: seconds-initial var(--initial-timing) linear,
           full-round 60s var(--initial-timing) linear infinite;
-          z-index: 1;
+        z-index: 1;
       }
       .minutes-arrow {
         --initial-timing: calc((3600 - var(--minutes-initial)) * 1s);
-        width: 3px;
+        width: 0.3rem;
         height: 50%;
         background: black;
         position: absolute;
@@ -82,7 +80,7 @@
       }
       .hours-arrow {
         --initial-timing: calc((43200 - var(--hours-initial)) * 1s);
-        width: 5px;
+        width: 0.5rem;
         height: 38%;
         background: black;
         position: absolute;
@@ -144,17 +142,17 @@
       <div class="hours-arrow"></div>
     </div>
     <script>
-      const clockElem = document.querySelectorAll('.clock')[0]
-      for(let i = 1; i <= 60; i++) {
-        const angle = i * 6
-        const isBigDot = i % 5 === 0
-        const dot = document.createElement('div')
-        dot.classList.add(isBigDot? 'big-dot' : 'small-dot')
-        dot.style.setProperty('--dot-angle', angle)
-        if(isBigDot) {
-          dot.setAttribute('dot-content', i / 5)
+      const clockElem = document.querySelectorAll(".clock")[0];
+      for (let i = 1; i <= 60; i++) {
+        const angle = i * 6;
+        const isBigDot = i % 5 === 0;
+        const dot = document.createElement("div");
+        dot.classList.add(isBigDot ? "big-dot" : "small-dot");
+        dot.style.setProperty("--dot-angle", angle);
+        if (isBigDot) {
+          dot.setAttribute("dot-content", i / 5);
         }
-        clockElem.appendChild(dot)
+        clockElem.appendChild(dot);
       }
       const date = new Date();
       let seconds = date.getSeconds();
@@ -165,7 +163,7 @@
       document.documentElement.style.setProperty("--seconds-initial", seconds);
       document.documentElement.style.setProperty(
         "--minutes-initial",
-        minutes * 60 - seconds
+        minutes * 60 + seconds
       );
       document.documentElement.style.setProperty(
         "--hours-initial",
